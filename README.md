@@ -107,7 +107,8 @@ Para ejecutar este repositorio correctamente, es necesario contar con herramient
     docker-compose down
       ```
     Para eliminar volúmenes y datos persistentes:
-      ```bash
+    ```bash
+    docker-compose down -v
    ```
 
   Debería ver un contenedor llamado desarrollo_container (o el que hayas definido en docker-compose.yml) en ejecución.
