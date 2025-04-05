@@ -1,0 +1,7 @@
+FROM python:3.9
+WORKDIR /app
+COPY requirements_streamlit.txt ./
+COPY api_streamlit.py ./
+RUN pip install -r requirements_streamlit.txt
+EXPOSE 8501
+CMD ["streamlit", "run", "api_streamlit.py", "--server.port=8501", "--server.address=0.0.0.0"]

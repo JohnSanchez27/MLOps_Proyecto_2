@@ -1,0 +1,119 @@
+[2025-04-05T02:41:49.399+0000] {taskinstance.py:1125} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: data_loading_dag.load_dataset scheduled__2025-04-02T00:00:00+00:00 [queued]>
+[2025-04-05T02:41:49.551+0000] {taskinstance.py:1125} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: data_loading_dag.load_dataset scheduled__2025-04-02T00:00:00+00:00 [queued]>
+[2025-04-05T02:41:49.555+0000] {taskinstance.py:1331} INFO - Starting attempt 1 of 2
+[2025-04-05T02:41:49.687+0000] {taskinstance.py:1350} INFO - Executing <Task(PythonOperator): load_dataset> on 2025-04-02 00:00:00+00:00
+[2025-04-05T02:41:49.724+0000] {standard_task_runner.py:57} INFO - Started process 349 to run task
+[2025-04-05T02:41:49.813+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'data_loading_dag', 'load_dataset', 'scheduled__2025-04-02T00:00:00+00:00', '--job-id', '7', '--raw', '--subdir', 'DAGS_FOLDER/carga_dato.py', '--cfg-path', '/tmp/tmpq44b21lg']
+[2025-04-05T02:41:49.843+0000] {standard_task_runner.py:85} INFO - Job 7: Subtask load_dataset
+[2025-04-05T02:41:50.258+0000] {task_command.py:410} INFO - Running <TaskInstance: data_loading_dag.load_dataset scheduled__2025-04-02T00:00:00+00:00 [running]> on host 8fa70ebba0d3
+[2025-04-05T02:41:50.841+0000] {taskinstance.py:1568} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='data_loading_dag' AIRFLOW_CTX_TASK_ID='load_dataset' AIRFLOW_CTX_EXECUTION_DATE='2025-04-02T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-04-02T00:00:00+00:00'
+[2025-04-05T02:41:55.790+0000] {taskinstance.py:1847} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/airflow/.local/lib/python3.9/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/home/airflow/.local/lib/python3.9/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/home/airflow/.local/lib/python3.9/site-packages/MySQLdb/connections.py", line 254, in query
+    _mysql.connection.query(self, query)
+MySQLdb.OperationalError: (1050, "Table 'cover_type' already exists")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.9/site-packages/airflow/operators/python.py", line 181, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.9/site-packages/airflow/operators/python.py", line 198, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/carga_dato.py", line 40, in load_dataset
+    cover_type.to_sql('cover_type', con=engine, if_exists='append', index=False)
+  File "/home/airflow/.local/lib/python3.9/site-packages/pandas/core/generic.py", line 2987, in to_sql
+    return sql.to_sql(
+  File "/home/airflow/.local/lib/python3.9/site-packages/pandas/io/sql.py", line 695, in to_sql
+    return pandas_sql.to_sql(
+  File "/home/airflow/.local/lib/python3.9/site-packages/pandas/io/sql.py", line 1728, in to_sql
+    table = self.prep_table(
+  File "/home/airflow/.local/lib/python3.9/site-packages/pandas/io/sql.py", line 1631, in prep_table
+    table.create()
+  File "/home/airflow/.local/lib/python3.9/site-packages/pandas/io/sql.py", line 838, in create
+    self._execute_create()
+  File "/home/airflow/.local/lib/python3.9/site-packages/pandas/io/sql.py", line 824, in _execute_create
+    self.table.create(bind=self.pd_sql.connectable)
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/sql/schema.py", line 962, in create
+    bind._run_ddl_visitor(ddl.SchemaGenerator, self, checkfirst=checkfirst)
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 3228, in _run_ddl_visitor
+    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 2211, in _run_ddl_visitor
+    visitorcallable(self.dialect, self, **kwargs).traverse_single(element)
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/sql/visitors.py", line 524, in traverse_single
+    return meth(obj, **kw)
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/sql/ddl.py", line 899, in visit_table
+    self.connection.execute(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1380, in execute
+    return meth(self, multiparams, params, _EMPTY_EXECUTION_OPTS)
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/sql/ddl.py", line 80, in _execute_on_connection
+    return connection._execute_ddl(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1472, in _execute_ddl
+    ret = self._execute_context(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
+    raise exception
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1900, in _execute_context
+    self.dialect.do_execute(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/default.py", line 736, in do_execute
+    cursor.execute(statement, parameters)
+  File "/home/airflow/.local/lib/python3.9/site-packages/MySQLdb/cursors.py", line 206, in execute
+    res = self._query(query)
+  File "/home/airflow/.local/lib/python3.9/site-packages/MySQLdb/cursors.py", line 319, in _query
+    db.query(q)
+  File "/home/airflow/.local/lib/python3.9/site-packages/MySQLdb/connections.py", line 254, in query
+    _mysql.connection.query(self, query)
+sqlalchemy.exc.OperationalError: (MySQLdb.OperationalError) (1050, "Table 'cover_type' already exists")
+[SQL: 
+CREATE TABLE cover_type (
+	`Elevation` TEXT, 
+	`Aspect` TEXT, 
+	`Slope` TEXT, 
+	`Horizontal_Distance_To_Hydrology` TEXT, 
+	`Vertical_Distance_To_Hydrology` TEXT, 
+	`Horizontal_Distance_To_Roadways` TEXT, 
+	`Hillshade_9am` TEXT, 
+	`Hillshade_Noon` TEXT, 
+	`Hillshade_3pm` TEXT, 
+	`Horizontal_Distance_To_Fire_Points` TEXT, 
+	`Wilderness_Area` TEXT, 
+	`Soil_Type` TEXT, 
+	`Cover_Type` TEXT
+)
+
+]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+[2025-04-05T02:41:55.946+0000] {taskinstance.py:1368} INFO - Marking task as UP_FOR_RETRY. dag_id=data_loading_dag, task_id=load_dataset, execution_date=20250402T000000, start_date=20250405T024149, end_date=20250405T024155
+[2025-04-05T02:41:56.008+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 7 for task load_dataset ((MySQLdb.OperationalError) (1050, "Table 'cover_type' already exists")
+[SQL: 
+CREATE TABLE cover_type (
+	`Elevation` TEXT, 
+	`Aspect` TEXT, 
+	`Slope` TEXT, 
+	`Horizontal_Distance_To_Hydrology` TEXT, 
+	`Vertical_Distance_To_Hydrology` TEXT, 
+	`Horizontal_Distance_To_Roadways` TEXT, 
+	`Hillshade_9am` TEXT, 
+	`Hillshade_Noon` TEXT, 
+	`Hillshade_3pm` TEXT, 
+	`Horizontal_Distance_To_Fire_Points` TEXT, 
+	`Wilderness_Area` TEXT, 
+	`Soil_Type` TEXT, 
+	`Cover_Type` TEXT
+)
+
+]
+(Background on this error at: https://sqlalche.me/e/14/e3q8); 349)
+[2025-04-05T02:41:56.083+0000] {local_task_job_runner.py:232} INFO - Task exited with return code 1
+[2025-04-05T02:41:56.163+0000] {taskinstance.py:2674} INFO - 0 downstream tasks scheduled from follow-on schedule check
