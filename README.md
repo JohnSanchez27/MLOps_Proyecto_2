@@ -144,3 +144,6 @@ FastAPI se utiliza en la carpeta inference para proporcionar un servicio de infe
 esta ultima imagen presenta una interfaz en Streamlit que permite visualizar los resultados de los modelos y su impacto en la toma de decisiones. Se incluyen campos para el usuario que facilitan la insercion de los datos a predecir. 
 
 
+## 🚀 Reto
+
+Uno de los principales retos de este proyecto ha sido la correcta configuración de los endpoints y las conexiones entre servicios distribuidos. Dado que cada aplicación (Airflow, MLflow, MinIO, FastAPI, Streamlit) se ejecuta en contenedores independientes, ha sido importante establecer rutas y credenciales adecuadas para permitir la comunicación fluida entre ellos. Por ejemplo, el servicio de inferencia debe acceder a modelos almacenados en MinIO utilizando variables de entorno compatibles con MLflow, mientras que Streamlit consume estos endpoints para mostrar resultados en tiempo real. Esta interconexión requiere una sincronización precisa de los puertos, rutas internas en Docker y autenticaciones, lo cual representa un desafío clave al diseñar sistemas orquestados y modulares.
