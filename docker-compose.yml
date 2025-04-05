@@ -7,16 +7,16 @@ x-airflow-common:
     MLFLOW_S3_ENDPOINT_URL: http://minio:9000
     AWS_ACCESS_KEY_ID: admin
     AWS_SECRET_ACCESS_KEY: supersecret
-    AIRFLOW_CORE_EXECUTOR: CeleryExecutor
-    AIRFLOW_DATABASE_SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    AIRFLOW_CORE_SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    AIRFLOW_CELERY_RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
-    AIRFLOW_CELERY_BROKER_URL: redis://:@redis:6379/0
-    AIRFLOW_CORE_FERNET_KEY: ''
-    AIRFLOW_CORE_DAGS_ARE_PAUSED_AT_CREATION: 'true'
-    AIRFLOW_CORE_LOAD_EXAMPLES: 'false'
-    AIRFLOW_API_AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
-    AIRFLOW_SCHEDULER_ENABLE_HEALTH_CHECK: 'true'
+    AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+    AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+    AIRFLOW__CORE__FERNET_KEY: ''
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
+    AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
@@ -43,8 +43,6 @@ services:
       - "8086:8501"
     depends_on:
       - inference
-    networks:
-      - network1
 
   inference:
     build: 
@@ -62,8 +60,6 @@ services:
       MLFLOW_S3_ENDPOINT_URL: http://minio:9000
       AWS_ACCESS_KEY_ID: admin
       AWS_SECRET_ACCESS_KEY: supersecret
-    networks:
-      - network1
 
   mlflow_serv:
     build:
@@ -91,8 +87,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-    networks:
-      - network1
 
   minio:
     container_name: Minio
@@ -107,8 +101,6 @@ services:
     volumes:
       - ./minio:/data
     restart: unless-stopped
-    networks:
-      - network1
 
   postgres:
     image: postgres:13
@@ -124,7 +116,6 @@ services:
       retries: 5
       start_period: 5s
     restart: always
-
 
   mysql:
     image: mysql:latest
@@ -144,8 +135,6 @@ services:
     tty: true        # docker run -t    
     volumes:
       - mysql_data:/var/lib/mysql
-    networks:
-      - network1
 
   redis:
     image: redis:latest
@@ -175,8 +164,6 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
-    networks:
-      - network1
 
   airflow-scheduler:
     <<: *airflow-common
@@ -192,8 +179,6 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
-    networks:
-      - network1
 
   airflow-worker:
     <<: *airflow-common
@@ -216,8 +201,6 @@ services:
         condition: service_completed_successfully
     #volumes:  # Añade esta línea y la siguiente para incluir tu volumen de dataset
     #  - ./datos:/opt/airflow/datos
-    networks:
-      - network1
 
   airflow-triggerer:
     <<: *airflow-common
@@ -243,7 +226,7 @@ services:
         function ver() {
           printf "%04d%04d%04d%04d" $${1//./ }
         }
-        airflow_version=$$(AIRFLOW_LOGGING_LOGGING_LEVEL=INFO && gosu airflow airflow version)
+        airflow_version=$$(AIRFLOW__LOGGING__LOGGING_LEVEL=INFO && gosu airflow airflow version)
         airflow_version_comparable=$$(ver $${airflow_version})
         min_airflow_version=2.2.0
         min_airflow_version_comparable=$$(ver $${min_airflow_version})
@@ -345,9 +328,7 @@ volumes:
   minio-data:
   postgres-db-volume:
   mysql_data:
-
-
 networks:
   network1:
       name: proyecto_2_2025
-      driver: bridge
+      external: true
