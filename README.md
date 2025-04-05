@@ -124,21 +124,21 @@ Para ejecutar este repositorio correctamente, es necesario contar con herramient
 
 ## 🏗️ Imagenes del despliegue
 
-imagenes\airflow.png
+![alt text](imagenes/airflow.png)
 
 Orquestación en Airflow, muestra la estructura de los DAGs y la interconexión entre tareas. Representa cómo los datos fluyen a través de diferentes nodos y cómo se ejecutan en paralelo o en secuencia, asegurando una ejecución eficiente de los flujos de trabajo, para este caso un para carga de datos y otro para entrenamiento.
 
-imagenes\minio.png
+![imagenes\minio.png](imagenes/minio.png)
 
 representación visual de los experimentos gestionados con MLflow. Aquí se documentan los diferentes modelos de machine learning entrenados, junto con sus métricas de evaluación y parámetros de configuración. Este seguimiento permite comparar modelos y seleccionar la mejor versión para producción.
 
 Asi mismo se muestra una vista del almacenamiento en MinIO, donde se gestionan los artefactos generados por los procesos de machine learning. Este sistema actúa como un repositorio central para guardar modelos, datos transformados y otros elementos esenciales para la reproducibilidad del proyecto.
 
-imagenes\fastApi.png
+![imagenes\fastApi.png](imagenes/fastApi.png)
 
 FastAPI se utiliza en la carpeta inference para proporcionar un servicio de inferencia de modelos de machine learning a través de una API RESTful. Esta API permite recibir solicitudes en formato JSON con las características necesarias para la predicción y devuelve los resultados de manera eficiente. La documentación interactiva generada automáticamente por FastAPI facilita la prueba y comprensión de los endpoints disponibles, permitiendo integrar el servicio con otras aplicaciones dentro del ecosistema del proyecto.
 
-imagenes\streamlit.png
+![imagenes\streamlit.png](imagenes/streamlit.png)
 
 esta ultima imagen presenta una interfaz en Streamlit que permite visualizar los resultados de los modelos y su impacto en la toma de decisiones. Se incluyen campos para el usuario que facilitan la insercion de los datos a predecir. 
 
